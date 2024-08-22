@@ -1,10 +1,10 @@
-from flask import Flask , redirect, url_for
+from flask import Flask , redirect, url_for, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return '<h2>Home</h2>'
+    return render_template("index.html", content = "test" , cars=["bmw", "audi", "toyota"])
 
 @app.route('/user/<name>')
 def user(name):
