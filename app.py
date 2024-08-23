@@ -6,6 +6,14 @@ app = Flask(__name__)
 def home():
     return render_template("index.html", content = "test" , cars=["bmw", "audi", "toyota"])
 
+@app.route('/home')
+def homePage():
+    return render_template("home.html")
+
+@app.route('/blog')
+def blogPage():
+    return render_template("blog.html")
+
 @app.route('/user/<name>')
 def user(name):
   if name == 'admin':
