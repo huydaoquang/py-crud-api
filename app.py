@@ -1,6 +1,13 @@
-from flask import Flask , redirect, url_for, render_template, request
+from flask import Flask , redirect, url_for, render_template, request,session 
+from datetime import timedelta
 
 app = Flask(__name__)
+
+# config session
+app.config["SECRET_KEY"] = "huydq"
+
+# config time logout
+app.permanent_session_lifetime = timedelta(minutes=1)
 
 @app.route('/')
 def home():
@@ -17,20 +24,39 @@ def blogPage():
 @app.route('/login', methods = ["POST", "GET"])
 def loginPage():
   if request.method == "POST": 
+    # set time logout
+    session.permanent = True
     user_name = request.form["email"]
     password = request.form["password"]
     print("user_name::::", user_name)
     print("password::::", password)
     
     if user_name and password:
+      session["user"] = user_name
       return redirect(url_for("user", name=user_name))
+
+  # user is login 
+  if "user" in session: 
+    return redirect(url_for("user"))
+  
+  # user is not logged in
   return render_template("login.html")
 
-@app.route('/user/<name>')
-def user(name):
-  if name == 'admin':
-    return redirect(url_for("admin"))
-  return f'<h2>{name}</h2>'
+@app.route("/logout")
+def logout():
+  session.pop("user", None)
+  return redirect(url_for("loginPage"))
+
+@app.route('/user/')
+def user():
+  if "user" in session: 
+    name = session["user"]
+    return f'<h2>{name}</h2>'
+    if name == 'admin':
+      return redirect(url_for("admin"))
+  else: 
+    return redirect(url_for("loginPage"))
+  
 
 @app.route('/admin')
 def admin():
