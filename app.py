@@ -1,4 +1,4 @@
-from flask import Flask , redirect, url_for, render_template, request,session 
+from flask import Flask , redirect, url_for, render_template, request,session, flash
 from datetime import timedelta
 
 app = Flask(__name__)
@@ -33,6 +33,7 @@ def loginPage():
     
     if user_name and password:
       session["user"] = user_name
+      flash("user logged in successfully","info")
       return redirect(url_for("user", name=user_name))
 
   # user is login 
@@ -45,16 +46,18 @@ def loginPage():
 @app.route("/logout")
 def logout():
   session.pop("user", None)
+  flash("user logout ","info")
   return redirect(url_for("loginPage"))
 
 @app.route('/user/')
 def user():
   if "user" in session: 
     name = session["user"]
-    return f'<h2>{name}</h2>'
+    return render_template("user.html", name=name)
     if name == 'admin':
       return redirect(url_for("admin"))
   else: 
+    flash("You haven't logged in!","info")
     return redirect(url_for("loginPage"))
   
 
