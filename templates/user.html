@@ -10,4 +10,16 @@
   {%endif %}
 {% endwith %}
 <h1>{{name}}</h1>
+<form action="#" method="post">
+  <div data-mdb-input-init class="form-outline mb-4">
+    <label class="form-label" for="registerName">Email</label>
+    <input type="text" name="email" id="registerName" class="form-control" placeholder="Enter email"  value="{{ email if email}}"/>
+    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mt-3 w-100">Submit edited</button>
+  </div>
+  <div data-mdb-input-init class="form-outline mb-4">
+    <label class="form-label" for="registerName">Name</label>
+    <input type="text" name="name" id="registerName" class="form-control" placeholder="Enter name"  value="{{ name if name}}"/>
+    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mt-3 w-100">Delete</button>
+  </div>
+</form>
 {% endblock %}
